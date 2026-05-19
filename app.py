@@ -7,7 +7,61 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-st.set_page_config(page_title="ivibe CRM — ATD 2026", page_icon="⚡", layout="wide")
+st.set_page_config(
+    page_title="ivibe CRM — ATD 2026",
+    page_icon="⚡",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
+st.markdown("""
+<style>
+/* ── Mobile-first layout ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Stack all columns vertically */
+    [data-testid="column"] {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+        padding: 0.25rem 0 !important;
+    }
+    /* Smaller headings */
+    h1 { font-size: 1.4rem !important; }
+    h2 { font-size: 1.1rem !important; }
+    h3 { font-size: 1rem !important; }
+    /* Compact metrics */
+    [data-testid="stMetric"] {
+        padding: 0.4rem 0.6rem !important;
+    }
+    [data-testid="stMetricLabel"]  { font-size: 0.75rem !important; }
+    [data-testid="stMetricValue"]  { font-size: 1.3rem !important; }
+    /* Full-width buttons */
+    .stButton > button {
+        width: 100% !important;
+        font-size: 0.85rem !important;
+    }
+    /* Expander labels wrap cleanly */
+    [data-testid="stExpander"] summary {
+        font-size: 0.85rem !important;
+        line-height: 1.3 !important;
+    }
+    /* Reduce side padding on main block */
+    .block-container {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+    /* Selectboxes and inputs full width */
+    [data-testid="stSelectbox"],
+    [data-testid="stTextInput"] {
+        width: 100% !important;
+    }
+}
+/* ── Sidebar hamburguer (sempre colapsada por padrão) ─────────────── */
+[data-testid="collapsedControl"] {
+    display: flex !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # ── Secrets ────────────────────────────────────────────────────────────────────
@@ -109,12 +163,12 @@ Output only the email, nothing else."""
 
 def badge(score):
     if score >= 7: return "HOT"
-    if score >= 3: return "Morno"
+    if score >= 2: return "Morno"
     return "Frio"
 
 def emoji(score):
     if score >= 7: return "🔥"
-    if score >= 3: return "⚡"
+    if score >= 2: return "⚡"
     return "❄️"
 
 
@@ -136,8 +190,8 @@ with st.sidebar:
     st.divider()
 
     hot  = len(df[df["score"] >= 7])
-    warm = len(df[(df["score"] >= 3) & (df["score"] < 7)])
-    cold = len(df[df["score"] < 3])
+    warm = len(df[(df["score"] >= 2) & (df["score"] < 7)])
+    cold = len(df[df["score"] < 2])
 
     st.write(f"🔥 {hot} HOT")
     st.write(f"⚡ {warm} Mornos")
@@ -180,9 +234,9 @@ if st.session_state.pagina == "CRM":
     if filtro_prio == "HOT":
         res = res[res["score"] >= 7]
     elif filtro_prio == "Morno":
-        res = res[(res["score"] >= 3) & (res["score"] < 7)]
+        res = res[(res["score"] >= 2) & (res["score"] < 7)]
     elif filtro_prio == "Frio":
-        res = res[res["score"] < 3]
+        res = res[res["score"] < 2]
     if filtro_pais != "Todos":
         res = res[res["pais"] == filtro_pais]
     if busca:
