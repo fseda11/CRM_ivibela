@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls D:/CRM_IvibeLA/*.py)",
+      "Bash(ls D:/CRM_IvibeLA/src/*.py)",
+      "Bash(ls D:/CRM_IvibeLA/app/*.py)"
+    ]
+  }
+}
